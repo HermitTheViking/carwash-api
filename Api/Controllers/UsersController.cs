@@ -1,14 +1,13 @@
-﻿using Domain;
-using Domain.Commands;
+﻿using Api.Mappers;
+using Api.Models;
+using Domain;
 using Domain.Databse.Models;
 using Domain.ErrorHandling;
+using Domain.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System.Collections.Generic;
-using Utility.Messaging;
-using Api.Mappers;
-using Api.Models;
 
 namespace Api.Controllers
 {
@@ -38,6 +37,8 @@ namespace Api.Controllers
         public IActionResult GetUsers()
         {
             List<UserDbModel> list = _unitOfWork.Users.GetAllAsync().Result;
+
+            if (list.Count > 0) { Ok("No user request have been made yet"); }
 
             var result = new List<UserDto>();
 

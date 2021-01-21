@@ -1,9 +1,9 @@
 ﻿using Domain.Databse.Models;
 using Domain.Events.Serialization;
+using Domain.Time;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using Utility.Time;
 
 namespace Domain.Events
 {

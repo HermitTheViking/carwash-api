@@ -1,6 +1,7 @@
 ﻿using Domain.Databse;
 using Domain.Databse.Models;
 using Google.Cloud.Firestore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,10 +13,14 @@ namespace Domain.Implementations
     {
         private readonly DatabaseEntities _entities;
         private static readonly string _collection = "users";
+        private readonly ILogger<UserRepository> _logger;
 
-        public UserRepository(DatabaseEntities entities)
+        public UserRepository(
+            DatabaseEntities entities,
+            ILogger<UserRepository> logger)
         {
             _entities = entities ?? throw new ArgumentNullException();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<List<UserDbModel>> GetAllAsync()

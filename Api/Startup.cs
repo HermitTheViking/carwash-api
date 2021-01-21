@@ -1,3 +1,6 @@
+using Api.Mappers;
+using Api.Models;
+using Api.UserContext;
 using Domain;
 using Domain.CommandHandlers;
 using Domain.Databse;
@@ -5,19 +8,15 @@ using Domain.Databse.Models;
 using Domain.Events;
 using Domain.Events.Wash;
 using Domain.Implementations;
+using Domain.Messaging;
+using Domain.Security;
+using Domain.Time;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Serilog;
-using Utility.Logging;
-using Utility.Messaging;
-using Utility.Security;
-using Utility.Time;
-using Api.Mappers;
-using Api.Models;
-using Api.UserContext;
 
 namespace Api
 {
@@ -41,7 +40,6 @@ namespace Api
             services.AddScoped<IStringHash, StringHash>();
             services.AddScoped<IMessageBus, FakeBus>();
             services.AddScoped<ITimeService, TimeService>();
-            services.AddScoped<ILogFactory, LogFactory>();
 
             services.AddScoped<IEventStore, EventStore>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

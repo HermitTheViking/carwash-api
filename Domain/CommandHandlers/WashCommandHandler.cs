@@ -3,12 +3,12 @@ using Domain.Databse.Models;
 using Domain.ErrorHandling;
 using Domain.Events;
 using Domain.Events.Wash;
+using Domain.Messaging;
+using Domain.Time;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
-using Utility.Messaging;
-using Utility.Time;
 
 namespace Domain.CommandHandlers
 {

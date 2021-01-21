@@ -1,13 +1,14 @@
-﻿using Domain;
+﻿using Api.Mappers;
+using Api.Models;
+using Domain;
 using Domain.Commands;
 using Domain.Databse.Models;
+using Domain.Messaging;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using System;
 using System.Collections.Generic;
-using Utility.Messaging;
-using Api.Mappers;
-using Api.Models;
 
 namespace Api.Controllers
 {
@@ -25,10 +26,10 @@ namespace Api.Controllers
             IMapper<WashDbModel, WashDto> washMapper,
             ILogger<WashController> logger)
         {
-            _messageBus = messageBus ?? throw new System.ArgumentNullException(nameof(messageBus));
-            _unitOfWork = unitOfWork ?? throw new System.ArgumentNullException(nameof(unitOfWork));
-            _washMapper = washMapper ?? throw new System.ArgumentNullException(nameof(washMapper));
-            _logger = logger ?? throw new System.ArgumentNullException(nameof(logger));
+            _messageBus = messageBus ?? throw new ArgumentNullException(nameof(messageBus));
+            _unitOfWork = unitOfWork ?? throw new ArgumentNullException(nameof(unitOfWork));
+            _washMapper = washMapper ?? throw new ArgumentNullException(nameof(washMapper));
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         [HttpGet]

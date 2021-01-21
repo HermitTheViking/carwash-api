@@ -1,12 +1,12 @@
 ﻿using Domain.Databse;
 using Domain.Databse.Models;
 using Google.Cloud.Firestore;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
-using Utility.Logging;
 
 namespace Domain.Implementations
 {
@@ -14,14 +14,15 @@ namespace Domain.Implementations
     {
         private readonly DatabaseEntities _entities;
         private static readonly string _collection = "washes";
+        private readonly ILogger<WashRepository> _logger;
         private int _durationInSecounds;
-        private readonly ILog _log;
 
-        public WashRepository(DatabaseEntities entities, ILogFactory logFactory)
+        public WashRepository(
+            DatabaseEntities entities,
+            ILogger<WashRepository> logger)
         {
-            if (logFactory == null) throw new ArgumentNullException(nameof(logFactory));
-            _log = logFactory.CreateLog<UnitOfWork>();
             _entities = entities ?? throw new ArgumentNullException();
+            _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
         public async Task<List<WashDbModel>> GetAllAsync()
@@ -52,7 +53,7 @@ namespace Domain.Implementations
             }
             catch (Exception ex)
             {
-                _log.Error(ex, "Error while prasing data from db");
+                _logger.LogError(ex, "Error while prasing data from db");
             }
 
             return list.OrderBy(x => x.Type).ToList();
@@ -194,7 +195,7 @@ namespace Domain.Implementations
             }
             catch (ThreadInterruptedException ex)
             {
-                _log.Warning($"Wash thread was interrupted. {ex.Message}");
+                _logger.LogWarning($"Wash thread was interrupted. {ex.Message}");
             }
         }
 

@@ -1,5 +1,5 @@
-﻿using Domain.Databse.Models;
-using Api.Models;
+﻿using Api.Models;
+using Domain.Databse.Models;
 
 namespace Api.Mappers
 {
