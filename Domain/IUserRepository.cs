@@ -12,6 +12,7 @@ namespace Domain
 
         Task<string> Add(UserDbModel userBbModel);
         void Remove(UserDbModel userBbModel);
+        void Update(string userId, Dictionary<string, object> updates);
 
         bool IsEmailAlreadyInUse(string userEmail);
     }

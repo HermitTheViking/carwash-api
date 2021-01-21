@@ -41,36 +41,26 @@ namespace Domain.CommandHandlers
 
         public void Handle(CreateWashCommand command)
         {
+            if (command == null) { return; }
             if (!_unitOfWork.Wash.IsWashOnGoingForUser(command.UserId)) { throw ExceptionFactory.WashIsOnGoingException(); }
-
-            DateTime startTime = _timeService.UtcNow;
 
             var newDbModel = new WashDbModel()
             {
                 Done = false,
                 Duration = int.Parse(_config.GetSection("WashTypes").GetSection(command.Type.ToString()).Value),
-                StartTime = startTime,
+                StartTime = _timeService.UtcNow,
                 Type = command.Type,
                 UserId = command.UserId
             };
 
             newDbModel.Id = _unitOfWork.Wash.Add(newDbModel).Result;
 
-            if (command.StartNow)
-            {
-                _unitOfWork.Wash.StartWashThread(newDbModel.Duration, $"{newDbModel.Id}-{newDbModel.Type}");
-            }
-
             _eventStore.AddEvents(_washEventFactory.GetWashCreatedEvent(newDbModel));
         }
 
         public void Handle(UpdateWashCommand command)
         {
-            UserDbModel userDbModel = _unitOfWork.Users.GetByIdAsync(command.UserId).Result;
-
-            if (userDbModel == null) { throw ExceptionFactory.UserNotFoundException(command.UserId); }
-
-            WashDbModel washDbModel = _unitOfWork.Wash.GetRecentByUserIdAsync(userDbModel.Id).Result;
+            WashDbModel washDbModel = _unitOfWork.Wash.GetRecentByUserIdAsync(command.UserId).Result;
 
             if (washDbModel == null) { return; }
 

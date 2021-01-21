@@ -34,7 +34,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("api/washes")]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult GetAllWashes()
         {
             List<WashDbModel> list = _unitOfWork.Wash.GetAllAsync().Result;
@@ -50,29 +50,32 @@ namespace Api.Controllers
 
         [HttpPost]
         [Route("api/washes")]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult CreateNewWash(CreateWashDto createDto)
         {
-            string userId = _unitOfWork.Users.GetByEmailAsync(createDto.Email).Result.Id;
+            var auth = FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance;
+
+            string userId = auth.GetUserByEmailAsync(createDto.Email).Result.Uid;
 
             if (userId == null) { return BadRequest("User was not found"); }
 
             _messageBus.Send(new CreateWashCommand
             {
                 Type = createDto.Type,
-                UserId = userId,
-                StartNow = createDto.StartNow
+                UserId = userId
             });
 
-            return Ok(createDto.StartNow ? "Wash created and started" : "Wash created");
+            return Ok("Wash created");
         }
 
         [HttpPut]
         [Route("api/washes")]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult UpdateWash(UpdateWashDto updateDto)
         {
-            string userId = _unitOfWork.Users.GetByEmailAsync(updateDto.Email).Result.Id;
+            var auth = FirebaseAdmin.Auth.FirebaseAuth.DefaultInstance;
+
+            string userId = auth.GetUserByEmailAsync(updateDto.Email).Result.Uid;
 
             if (userId == null) { return BadRequest("User was not found"); }
 

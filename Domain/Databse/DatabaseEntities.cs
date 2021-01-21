@@ -20,7 +20,6 @@ namespace Domain.Databse
 
         private async void InitializeDb()
         {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", _config.GetSection("GOOGLE_APPLICATION_CREDENTIALS").Value);
             ProjectId = _config.GetSection("ProjectId").Value;
             FirestoreDb = FirestoreDb.Create(ProjectId);
 

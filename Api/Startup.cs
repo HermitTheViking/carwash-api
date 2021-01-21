@@ -11,12 +11,17 @@ using Domain.Implementations;
 using Domain.Messaging;
 using Domain.Security;
 using Domain.Time;
+using FirebaseAdmin;
+using Google.Apis.Auth.OAuth2;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.IdentityModel.Tokens;
 using Serilog;
+using System;
 
 namespace Api
 {
@@ -34,10 +39,31 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Configuration.GetSection("GOOGLE_APPLICATION_CREDENTIALS").Value, EnvironmentVariableTarget.Process);
+
+            FirebaseApp.Create(new AppOptions
+            {
+                Credential = GoogleCredential.FromFile(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"))
+            });
+
+            services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+            .AddJwtBearer(options =>
+            {
+                options.Authority = $"https://securetoken.google.com/{Configuration.GetSection("ProjectId").Value}";
+                options.TokenValidationParameters = new TokenValidationParameters
+                {
+                    ValidateIssuer = true,
+                    ValidIssuer = $"https://securetoken.google.com/{Configuration.GetSection("ProjectId").Value}",
+                    ValidateAudience = true,
+                    ValidAudience = $"{Configuration.GetSection("ProjectId").Value}",
+                    ValidateLifetime = true
+                };
+            });
+
             services.AddScoped<DatabaseEntities>();
             services.AddScoped<WashEventFactory>();
 
-            services.AddScoped<IStringHash, StringHash>();
+            services.AddScoped<ICryptographic, Cryptographic>();
             services.AddScoped<IMessageBus, FakeBus>();
             services.AddScoped<ITimeService, TimeService>();
 
@@ -49,6 +75,7 @@ namespace Api
             services.AddScoped<ICommandHandler, WashCommandHandler>();
 
             services.AddScoped<ICurrentContext, UserApiContext>();
+            services.AddScoped<IMapper<UserDbModel, UserDto>, UserMapper>();
             services.AddScoped<IMapper<WashDbModel, WashDto>, WashMapper>();
 
             services.AddCors(options =>
@@ -75,6 +102,8 @@ namespace Api
             app.UseSerilogRequestLogging();
 
             app.UseRouting();
+
+            app.UseAuthentication();
 
             app.UseAuthorization();
 

@@ -1,5 +1,6 @@
 ﻿using Domain.Databse;
 using Domain.Databse.Models;
+using Domain.Security;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -96,6 +97,11 @@ namespace Domain.Implementations
         public async void Remove(UserDbModel userDbModel)
         {
             await _entities.FirestoreDb?.Collection(_collection)?.Document(userDbModel.Id.ToString()).DeleteAsync();
+        }
+
+        public async void Update(string userId, Dictionary<string, object> updates)
+        {
+            await _entities.FirestoreDb?.Collection(_collection)?.Document(userId)?.UpdateAsync(updates);
         }
 
         public bool IsEmailAlreadyInUse(string userEmail)

@@ -1,5 +1,6 @@
 ﻿using Domain.Databse;
 using Domain.Databse.Models;
+using Domain.Security;
 using Google.Cloud.Firestore;
 using Microsoft.Extensions.Logging;
 using System;
@@ -12,16 +13,19 @@ namespace Domain.Implementations
 {
     public class WashRepository : IWashRepository
     {
-        private readonly DatabaseEntities _entities;
         private static readonly string _collection = "washes";
+        private readonly DatabaseEntities _entities;
         private readonly ILogger<WashRepository> _logger;
+        private readonly ICryptographic _crypto;
         private int _durationInSecounds;
 
         public WashRepository(
             DatabaseEntities entities,
+            ICryptographic cryptographic,
             ILogger<WashRepository> logger)
         {
             _entities = entities ?? throw new ArgumentNullException();
+            _crypto = cryptographic ?? throw new ArgumentNullException(nameof(cryptographic));
             _logger = logger ?? throw new ArgumentNullException(nameof(logger));
         }
 
@@ -42,7 +46,7 @@ namespace Domain.Implementations
                         list.Add(new WashDbModel()
                         {
                             Id = documentSnapshot.Id,
-                            UserId = dictionary["UserId"].ToString(),
+                            UserId = _crypto.Decrypt(dictionary["UserId"].ToString(), "J2uEDdYPYG4h996V"),
                             StartTime = Convert.ToDateTime(dictionary["StartTime"].ToString().Replace("Timestamp: ", "")),
                             Type = int.Parse(dictionary["Type"].ToString()),
                             Duration = int.Parse(dictionary["Duration"].ToString()),
@@ -62,6 +66,8 @@ namespace Domain.Implementations
         public async Task<List<WashDbModel>> GetAllByUserIdAsync(string userId)
         {
             if (string.IsNullOrEmpty(userId)) { return null; }
+
+            userId = _crypto.Encrypt(userId, "J2uEDdYPYG4h996V");
 
             CollectionReference colRef = _entities.FirestoreDb?.Collection(_collection);
             Query Query = colRef?.WhereEqualTo("UserId", userId);
@@ -93,6 +99,8 @@ namespace Domain.Implementations
         {
             if (string.IsNullOrEmpty(userId)) { return null; }
 
+            userId = _crypto.Encrypt(userId, "J2uEDdYPYG4h996V");
+
             CollectionReference colRef = _entities.FirestoreDb?.Collection(_collection);
             Query Query = colRef?.WhereEqualTo("UserId", userId);
             QuerySnapshot QuerySnapshot = await Query.GetSnapshotAsync();
@@ -107,7 +115,7 @@ namespace Domain.Implementations
                     list.Add(new WashDbModel()
                     {
                         Id = documentSnapshot.Id,
-                        UserId = dictionary["UserId"].ToString(),
+                        UserId = userId,
                         StartTime = Convert.ToDateTime(dictionary["StartTime"].ToString().Replace("Timestamp: ", "")),
                         Type = int.Parse(dictionary["Type"].ToString()),
                         Duration = int.Parse(dictionary["Duration"].ToString()),
@@ -133,7 +141,7 @@ namespace Domain.Implementations
                 return new WashDbModel()
                 {
                     Id = snapshot.Id,
-                    UserId = dictionary["UserId"].ToString(),
+                    UserId = _crypto.Decrypt(dictionary["UserId"].ToString(), "J2uEDdYPYG4h996V"),
                     StartTime = Convert.ToDateTime(dictionary["StartTime"].ToString().Replace("Timestamp: ", "")),
                     Type = int.Parse(dictionary["Type"].ToString()),
                     Duration = int.Parse(dictionary["Duration"].ToString()),
@@ -146,6 +154,8 @@ namespace Domain.Implementations
 
         public async Task<string> Add(WashDbModel washDbModel)
         {
+            washDbModel.UserId = _crypto.Encrypt(washDbModel.UserId, "J2uEDdYPYG4h996V");
+
             DocumentReference docRef = await _entities.FirestoreDb?.Collection(_collection)?.AddAsync(washDbModel);
             return docRef.Id;
         }
@@ -166,7 +176,7 @@ namespace Domain.Implementations
 
             WashDbModel dbModel = GetRecentByUserIdAsync(userId).Result;
 
-            if (dbModel == null) { return true; }
+            if (dbModel == null) { return true; } //TODO: Is this right
 
             return dbModel.Done;
         }

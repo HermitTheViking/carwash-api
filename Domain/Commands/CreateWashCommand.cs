@@ -4,6 +4,5 @@
     {
         public string UserId { get; set; }
         public int Type { get; set; }
-        public bool StartNow { get; set; }
     }
 }

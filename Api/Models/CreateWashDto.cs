@@ -10,8 +10,5 @@ namespace Api.Models
 
         [Required]
         public int Type { get; set; }
-
-        [Required]
-        public bool StartNow { get; set; }
     }
 }

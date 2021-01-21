@@ -32,8 +32,8 @@ namespace Api.Controllers
         }
 
         [HttpGet]
-        [Route("api/users/")]
-        [AllowAnonymous]
+        [Route("api/users")]
+        [Authorize]
         public IActionResult GetUsers()
         {
             List<UserDbModel> list = _unitOfWork.Users.GetAllAsync().Result;
@@ -49,7 +49,7 @@ namespace Api.Controllers
 
         [HttpGet]
         [Route("api/users/{email}")]
-        [AllowAnonymous]
+        [Authorize]
         public IActionResult GetUserByEmail(string email)
         {
             if (string.IsNullOrWhiteSpace(email)) { throw ExceptionFactory.UserWithEmailNotFoundException(email); }
