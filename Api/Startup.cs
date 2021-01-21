@@ -39,11 +39,11 @@ namespace Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Configuration.GetSection("GOOGLE_APPLICATION_CREDENTIALS").Value, EnvironmentVariableTarget.Process);
+            Environment.SetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS", Configuration.GetSection("GOOGLE_APPLICATION_CREDENTIALS").Value);
 
             FirebaseApp.Create(new AppOptions
             {
-                Credential = GoogleCredential.FromFile(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS"))
+                Credential = GoogleCredential.FromFile(Environment.GetEnvironmentVariable("GOOGLE_APPLICATION_CREDENTIALS") ?? "GOOGLE_APPLICATION_CREDENTIALS")
             });
 
             services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
@@ -97,7 +97,7 @@ namespace Api
 
             app.UseCors(AllowSpecificOrigins);
 
-            app.UseHttpsRedirection();
+            //app.UseHttpsRedirection();
 
             app.UseSerilogRequestLogging();
 
