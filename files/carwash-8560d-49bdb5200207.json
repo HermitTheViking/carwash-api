@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "carwash-8560d",
+  "private_key_id": "49bdb5200207ef7a3fc8f07ea22a2931dbeadf5e",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQCOXq9kC5fqU1LM\nQze8ENordh1pv9CVsKn1YZu49QX11fjj6oUHv3lR5fsNVWIxzwC0mH7Hfmr/6Vek\nNrXuQUoIw1ZHR2isDSsqAUZzZUHDq4gwFKlmDaXjzyb0QUpbPcwPE/gChBV5HjnD\nspTT0lYlCqjDF3T7XBuNK2QDY7Cl6EUX/UrxSZG9zelCi60kkQS3vCRjeXQYrCJj\nvdot+s/C7BeNLtqFfymdMOWNGpr3BuRTVN/8+u3K/QweE0Qm+7zPvbQzzxpqPzdx\nSTotuHxI4yvk1YMMHntbvefSizEwjkLBE/KpkmAPcNRZtVYCMeGUVAuKyIORHUfp\nWFubdLBRAgMBAAECggEACaqof64BLBy+j/ZLwqi674gvD2mXPjqxvOKvl0YybT07\nOi/HxZK80uXp1GoaPJCLbI0NeqUnmxBbGOAgHTkbT5oCcdze4LkU17Qgy6AHRZkQ\nKleUzZmaocEEf5bZTMsBinqMHzucVk4flPKQrrXm5HqjTSUla8BsHHs4Pg9W71of\n40BJa3XluMIiI7KMw4bbpF2ivQKuHn/M9JMPzLsaa/1y9Y/Ny1zxlpZqqJ/cGLv2\nMAq5mJm6At5KNlgRgA2iDnDyF0z32CWK8WAvZx+pu3jgJSoq50WH18MbpF3++FAB\nHvDfuCJ/hreqt2H0vzsibeBVodQKtDRwbUxjgCMjCwKBgQDGychqQREp2lGPIUCw\npN6KUKVo3FLEeBXZGtTGFpaCgtr0tuoVRx6XJ/J8zBlVUsFMVqUmRm4kOv5FJbnt\nX+9j6VHrV8SM8woQS78Bxsmwkfq+si8fQYZwsQKaoiftaq/6jCobAcEWDuteuJjs\n+bcSnbwd4Detvp6P59PL9A2CowKBgQC3WCPAqwsl1b6OW6pnB+SdmSwNFAc4GQ9c\nfOhAZFqKphqwY7hqIBVdG0GxhIokmEEXdttflTPDMLocOOQwBh9azcxHt/7AJKiB\naB099IVBVj3Gh8lMEsAOlNDBl+LlNrwJRZGZ2S9mN8IoX3ptKh9fxCmiAS/MjiaB\n+x+WhIgkewKBgD7zk6YiaN8KJh3fd+74pwjCNT+Z1hQluzV/i7YXXR6DdfddHZAT\nb5qKqf3fXH5qsJAOOEqAr0yF6hPXuKN1aAgJ0UloB/Ri2uMCOcDERQbHk9Jj9ww8\n4eg6BgsWIvLKgGQlkwfubEkh/GOIrdUN123rybDkWn2JCgmkbqv943FlAoGAWNQT\nPl2gYQxV7pLq1FA2q0Ry20NA3CUIFD9QJyJ324TumVc3GfPBZgK2qVMVuvUpVDz5\nvC2FjqQlB1do9vuAZXYf6v9yJZWdLlVLFaFKjoVCGNXg6UKMWoQvQBxeib8jCzrx\neCCJnnSVVQotPoaR/MwFf8AjcG/OqFsKytobO9ECgYAfPs57TgsPgj3Sw53O+TTf\nR4KXRrL20QjtaixwAPr/y9+aTPhmDJO7ItJzlUEl6ozwvnynh6rJXSQqn6CyM5pY\nv8++sRaF2jllo1aSjX3tEi1XwZjyEorKTQjBo3/UXjpvZqbJBAmVpF/IFcl+mcV8\nhzNnh5O+Wa0tR+RA7uH/jQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "dbuser@carwash-8560d.iam.gserviceaccount.com",
+  "client_id": "115102754301586660822",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/dbuser%40carwash-8560d.iam.gserviceaccount.com"
+}
